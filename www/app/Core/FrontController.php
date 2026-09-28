@@ -144,7 +144,21 @@ class FrontController
             $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
             $controlador->ejercicio7decisiones();
         },
+    ); Route::add(
+        '/ejercicio1-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->doEjercicio1();
+        },
+        'post'
+    ); Route::add(
+        '/ejercicio1-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicio1();
+        },
     );
+
 
 
         Route::add(
