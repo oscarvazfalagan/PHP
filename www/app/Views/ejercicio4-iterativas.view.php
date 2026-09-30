@@ -12,6 +12,8 @@ declare(strict_types=1);
     <?php endif; ?>
     <div class="col-12">
         <div class="card shadow mb-4">
+            <p>Numeros ordenados :<?php echo implode(',', $arraySort); ?></p>
+            </p>
             <form method="post" action="">
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -23,8 +25,10 @@ declare(strict_types=1);
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <label for="numeros">Números a ordenar:</label>
-                                <input type="text" class="form-control" name="numeros" id="numeros" value="<?php echo $numeros ?? '' ?>" />
+                                <label for="numeros">Introduce los números se separarán con comas y el cambio de línea se marca con el carácter | :</label>
+                                <textarea name="texto" id="texto">
+                                    <?php echo $texto ?? '' ?>
+                                </textarea>
                                 <p class="text-danger small"><?php echo $error ?? ''; ?></p>
                             </div>
                         </div>

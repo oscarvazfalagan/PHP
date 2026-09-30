@@ -157,6 +157,51 @@ class FrontController
             $controlador = new \Com\Daw2\Controllers\IterativasController();
             $controlador->ejercicio1();
         },
+
+    ); Route::add(
+        '/ejercicio2-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicio2();
+        },
+    ); Route::add(
+        '/ejercicio2-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicioIterativas2();
+        },
+        'post'
+    ); Route::add(
+        '/ejercicio3-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicio3();
+        },
+    ); Route::add(
+        '/ejercicio3-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicioIterativas3();
+        },
+        'post'
+    ); Route::add(
+        '/ejercicio4-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicio4();
+        },
+    ); Route::add(
+        '/ejercicio4-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicioIterativas4();
+        },
+        'post'
+
+
+
+
+
     );
 
 
