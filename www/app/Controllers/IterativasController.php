@@ -103,7 +103,7 @@ class IterativasController extends \Com\Daw2\Core\BaseController
 
     public function ejercicioIterativas3(): void
     {
-        $errores = $this->checkEjercicio2($_POST);
+        $errores = $this->checkEjercicio3($_POST);
         $inputNumeros = filter_var($_POST['numeros'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ($errores === []) {
             //Hacemos el trabajo
@@ -169,38 +169,38 @@ class IterativasController extends \Com\Daw2\Core\BaseController
         return $errores;
     }
 
-    public function ejercicio4(): void
+    public function ejercicio4(array $errores = [],string $NumberString =""): void
     {
         $data = array(
             'titulo' => 'Ejercicios iterativas',
             'breadcrumb' => ['Inicio', 'Ordenar'],
         );
         $data['errores'] = $errores;
-        $data['numeros'] = $numeros;
-        $data['resultado'] = $resultado;
+
         $this->view->showViews(array('templates/header.view.php', 'ejercicio4-iterativas.view.php', 'templates/footer.view.php'), $data);
     }
 
     public function ejercicioIterativas4(): void
     {
-        $letras = $_POST['texto'];
+       $errores = $this->checkEjercicio4($_POST['texto']);
+        if($errores===[]){
 
-        $this->ejercicio4();
+        }
+
+
+        $this->ejercicio4($errores);
     }
 
 
-    private function checkEjercicio4($data): array
+    private function checkEjercicio4(string $data): array
     {
         $errores = [];
-        if (empty($data['letras'])) {
+        if (empty($data)) {
             $errores['letras'] = 'Campo obligatorio';
         } else {
-
-            foreach ($letras as $letra) {
-                if () {
-                    $errores['letras'] = "El valor '$letras' no es valido";
+                if(preg_match("/^[A-Z]{1}/",$data)){
+                    $errores['texto'] = 'Debes introducir letras';
                 }
-            }
         }
         return $errores;
     }

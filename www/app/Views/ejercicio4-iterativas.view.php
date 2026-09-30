@@ -3,16 +3,8 @@
 declare(strict_types=1);
 ?>
 <div class="row">
-    <?php
-    if (isset($mayor) && isset($menor)):
-        ?>
-        <div class="col-12 alert alert-success">
-            <p>Mayor: <?php echo $mayor ?>, Menor: <?php echo $menor ?></p>
-        </div>
-    <?php endif; ?>
     <div class="col-12">
         <div class="card shadow mb-4">
-            <p>Numeros ordenados :<?php echo implode(',', $arraySort); ?></p>
             </p>
             <form method="post" action="">
                 <div
@@ -25,7 +17,7 @@ declare(strict_types=1);
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <label for="numeros">Introduce los números se separarán con comas y el cambio de línea se marca con el carácter | :</label>
+                                <label for="numeros">Introduce el texto :</label>
                                 <textarea name="texto" id="texto">
                                     <?php echo $texto ?? '' ?>
                                 </textarea>
