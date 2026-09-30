@@ -184,7 +184,7 @@ class IterativasController extends \Com\Daw2\Core\BaseController
     {
        $errores = $this->checkEjercicio4($_POST['texto']);
         if($errores===[]){
-
+            preg_match_all("/[]/")
         }
 
 
