@@ -1,2 +1,47 @@
 <?php
+
 declare(strict_types=1);
+?>
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            </p>
+            <form method="post" action="">
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Numero de letras</h6>
+                </div>
+                <div>
+                    <p>
+                        Estas son el numero de coincidencias :
+                        <?php
+                        foreach ($matches as $words => $cantidad):
+                            echo $words . ':' . $cantidad . ' ';
+                        endforeach;
+                        ?>
+                    </p>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <!--<form action="./?sec=formulario" method="post">                   -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="numeros">Introduce el texto :</label>
+                                <textarea name="texto" id="texto">
+                                    <?php echo $texto ?? '' ?>
+                                </textarea>
+                                <p class="text-danger small"><?php echo $errores['texto'] ?? ''; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-12 text-right">
+                        <input type="submit" value="Ordenar números" name="enviar" class="btn btn-primary ml-2"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

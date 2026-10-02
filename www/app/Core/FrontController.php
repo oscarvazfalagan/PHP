@@ -198,6 +198,20 @@ class FrontController
         },
         'post'
 
+    ); Route::add(
+        '/ejercicio5-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicio5();
+        },
+    ); Route::add(
+        '/ejercicio5-iterativo',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\IterativasController();
+            $controlador->ejercicioIterativas5();
+        },
+        'post'
+
 
 
 

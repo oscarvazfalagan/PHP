@@ -9,7 +9,17 @@ declare(strict_types=1);
             <form method="post" action="">
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Ordenación de mayor a menor</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Numero de letras</h6>
+                </div>
+                <div>
+                    <p>
+                        Estas son el numero de coincidencias :
+                        <?php
+                        foreach ($matches as $letra => $cantidad):
+                                echo $letra . ':' . $cantidad . ' ';
+                            endforeach;
+                        ?>
+                    </p>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -21,7 +31,7 @@ declare(strict_types=1);
                                 <textarea name="texto" id="texto">
                                     <?php echo $texto ?? '' ?>
                                 </textarea>
-                                <p class="text-danger small"><?php echo $error ?? ''; ?></p>
+                                <p class="text-danger small"><?php echo $errores['texto'] ?? ''; ?></p>
                             </div>
                         </div>
                     </div>
