@@ -227,6 +227,21 @@ class FrontController
         'post'
 
 
+    ); Route::add(
+        '/ejercicioPedidosClientes',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\pedidosClientesController();
+            $controlador->ejercicioPedidosClientes();
+        },
+    ); Route::add(
+        '/ejercicioPedidosClientes',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\pedidosClientesController();
+            $controlador->doPedidosClientes();
+        },
+        'post'
+
+
 
 
 
