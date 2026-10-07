@@ -48,16 +48,72 @@ declare(strict_types=1);
                 ?>
                 </tbody>
             </table>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Limpio</th>
-                    <th>Una suspensa</th>
-                    <th>Repite</th>
-                </tr>
-                </thead>
-            </table>
+
+        <div class="alert alert-success">
+            <h3>Han aprobado todo</h3>
+            <ul>
+            <?php
+            foreach ($suspensos as $nombreSuspenso => $datos) {
+            ?>
+
+                    <?php
+                    if($suspensos[$nombreSuspenso] == 0) :?>
+                        <li><?php echo $nombreSuspenso; ?></li>
+                        <?php
+                    endif;
+                    }
+                    ?>
+            </ul>
         </div>
+        <div class="alert alert-warning">
+            <h3>Han suspenido al menos una</h3>
+            <ul>
+                <?php
+                foreach ($suspensos as $nombreSuspenso => $datos) {
+                    ?>
+
+                    <?php
+                    if($suspensos[$nombreSuspenso] >= 1) :?>
+                        <li><?php echo $nombreSuspenso; ?></li>
+                    <?php
+                    endif;
+                }
+                ?>
+            </ul>
+        </div>
+        <div class="alert alert-info">
+            <h3>Promocionan</h3>
+            <ul>
+                <?php
+                foreach ($suspensos as $nombreSuspenso => $datos) {
+                    ?>
+
+                    <?php
+                    if($suspensos[$nombreSuspenso] <= 1) :?>
+                        <li><?php echo $nombreSuspenso; ?></li>
+                    <?php
+                    endif;
+                }
+                ?>
+            </ul>
+        </div>
+        <div class="alert alert-">
+            <h3>No promocionan</h3>
+            <ul>
+                <?php
+                foreach ($suspensos as $nombreSuspenso => $datos) {
+                    ?>
+
+                    <?php
+                    if($suspensos[$nombreSuspenso] >= 2) :?>
+                        <li><?php echo $nombreSuspenso; ?></li>
+                    <?php
+                    endif;
+                }
+                ?>
+            </ul>
+        </div>
+
         <?php
     }
     ?>

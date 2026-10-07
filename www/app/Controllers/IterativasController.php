@@ -304,7 +304,7 @@ class IterativasController extends \Com\Daw2\Core\BaseController
     }
 
 
-    public function ejercicio8(string $json = '', array $errores = [], array $resultado = []): void
+    public function ejercicio8(string $json = '', array $errores = [], array $resultado = [], array $suspensos = []): void
     {
         $data = array(
             'titulo' => 'Ejercicios iterativas',
@@ -313,6 +313,7 @@ class IterativasController extends \Com\Daw2\Core\BaseController
         $data['errores'] = $errores;
         $data['json'] = $json;
         $data['resultado'] = $resultado;
+        $data['suspensos'] = $suspensos;
         $this->view->showViews(array('templates/header.view.php', 'ejercicio8-iterativas.view.php', 'templates/footer.view.php'), $data);
     }
 
@@ -322,7 +323,8 @@ class IterativasController extends \Com\Daw2\Core\BaseController
         $errores = $this->checkEjercicio8($json);
         if ($errores === []) {
             $resultado = $this->procesarEjercicio8(json_decode($json, true));
-            $this->ejercicio8(filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores, $resultado);
+            $suspensos = $this->cursoEjercicio8(json_decode($json, true));
+            $this->ejercicio8(filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores, $resultado,$suspensos);
         } else {
             $this->ejercicio8(filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores);
         }
@@ -377,14 +379,13 @@ class IterativasController extends \Com\Daw2\Core\BaseController
     }
 
     private function cursoEjercicio8(array $datos): array {
+        $alumnosSuspensos = [];
         foreach ($datos as $asignatura => $alumnos) {
-            $alumnosSuspensos = [];
-
             foreach ($alumnos as $nombre => $nota) {
                 if (!isset($alumnosSuspensos[$nombre])) {
                     $alumnosSuspensos[$nombre] = 0;
                 }
-                if($nota <= 5){
+                if($nota < 5){
                 $alumnosSuspensos[$nombre]++;
                 }
             }
