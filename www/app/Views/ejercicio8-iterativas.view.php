@@ -97,7 +97,7 @@ declare(strict_types=1);
                 ?>
             </ul>
         </div>
-        <div class="alert alert-">
+        <div class="alert alert-danger">
             <h3>No promocionan</h3>
             <ul>
                 <?php
