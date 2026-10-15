@@ -240,6 +240,13 @@ class FrontController
             $controlador->doPedidosClientes();
         },
         'post'
+    ); Route::add(
+        '/trabajadorController',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+            $controlador->conectar();
+        },
+        'get'
 
 
 
