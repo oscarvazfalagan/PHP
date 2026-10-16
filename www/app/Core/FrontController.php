@@ -244,9 +244,31 @@ class FrontController
         '/trabajadorController',
         function () {
             $controlador = new \Com\Daw2\Controllers\TrabajadorController();
-            $controlador->conectar();
+            $controlador->ejercicioTrabajadores();
         },
         'get'
+    ); Route::add(
+        '/trabajadorControllerOrd',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+            $controlador->ejercicioTrabajadoresOrd();
+        },
+        'get'
+    ); Route::add(
+        '/trabajadorControllerSta',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+            $controlador->ejercicioTrabajadoresStan();
+        },
+        'get'
+    ); Route::add(
+        '/trabajadorControllerNombre',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+            $controlador->ejercicioTrabajadoresNombre();
+        },
+        'get'
+
 
 
 
