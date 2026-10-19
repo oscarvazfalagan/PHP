@@ -7,6 +7,7 @@ declare(strict_types=1);
 <?php
 if (!empty($trabajadores)) {
     ?>
+
     <div class="col-12">
         <table class="table table-striped">
             <thead>

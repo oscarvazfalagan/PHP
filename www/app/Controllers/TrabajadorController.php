@@ -93,5 +93,35 @@ class TrabajadorController extends BaseController
     }
 
 
+    public function ejercicioTrabajadoresFiltros(String $username =''): void
+    {
+        $data = array(
+            'titulo' => 'Ejercicio Tabajadores',
+            'breadcrumb' => ['Inicio', 'Trabajadores'],
+        );
+
+        $modelTrabajador = new TrabajadorModel();
+
+        $trabajadores = [];
+        if($username !== ''){
+            trim($username);
+            $trabajadores = $modelTrabajador ->whereName($username);
+        }
+        if(empty($trabajadores)){
+            $data['trabajadores'] = $modelTrabajador -> getTrabajadores();
+        }else{
+            $data['trabajadores'] = $trabajadores;
+        }
+
+        $data['roles'] = $modelTrabajador -> getRoles(); ;
+
+        $this->view->showViews(array('templates/header.view.php', 'ejercicioTrabajadoreFiltros.view.php', 'templates/footer.view.php'), $data);
+    }
+
+    private function conectarFiltros():void{
+        $username = $_GET['username'];
+        $this->ejercicioTrabajadoresFiltros($username);
+    }
+
 
 }

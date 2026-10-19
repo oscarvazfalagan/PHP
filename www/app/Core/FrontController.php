@@ -267,7 +267,15 @@ class FrontController
             $controlador = new \Com\Daw2\Controllers\TrabajadorController();
             $controlador->ejercicioTrabajadoresNombre();
         },
+
+    ); Route::add(
+        '/trabajadorControllerFiltros',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+            $controlador->ejercicioTrabajadoresFiltros();
+        },
         'get'
+
 
 
 
