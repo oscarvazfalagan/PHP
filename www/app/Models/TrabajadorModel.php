@@ -22,7 +22,7 @@ class TrabajadorModel extends BaseDbModel
        return $roles;
     }
     public function whereName($username):array{
-        $sql = 'SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country ';
+        $sql = 'SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country WHERE username LIKE %:username%';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
         return $stmt->fetchAll();
