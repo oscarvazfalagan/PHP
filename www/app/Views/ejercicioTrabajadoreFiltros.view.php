@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 ?>
     <div class="row">
-<?php
-if (!empty($trabajadores)) {
-    ?>
+
 <!--Inicio HTML -->
 <div class="row">
+    <style>
+        .mensaje-error {
+            color: #d9534f;
+            background-color: #fdf7f7;
+            border: 1px solid #d9534f;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+    </style>
     <div class="col-12">
         <div class="card shadow mb-4">
-            <form method="get" action="/proveedores">
+            <form method="get" >
                 <input type="hidden" name="order" value="1"/>
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -24,7 +32,7 @@ if (!empty($trabajadores)) {
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="alias">Username:</label>
-                                <input type="text" class="form-control" name="username" id="username" value="" />
+                                <input type="text" class="form-control" name="username" id="username" value=<?php echo $username ?? '' ?>>
                             </div>
                         </div>
                         <?php
@@ -60,7 +68,7 @@ if (!empty($trabajadores)) {
                 </div>
                 <div class="card-footer">
                     <div class="col-12 text-right">
-                        <a href="/proveedores" value="" name="reiniciar" class="btn btn-danger">Reiniciar filtros</a>
+                        <a href="/trabajadorControllerFiltros" value="" name="reiniciar" class="btn btn-danger">Reiniciar filtros</a>
                         <input type="submit" value="Aplicar filtros" name="enviar" class="btn btn-primary ml-2"/>
                     </div>
                 </div>
@@ -68,6 +76,7 @@ if (!empty($trabajadores)) {
         </div>
     </div>
     <div class="col-12">
+        <?php  if(!empty($trabajadores)){?>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -98,8 +107,11 @@ if (!empty($trabajadores)) {
             ?>
             </tbody>
         </table>
+        <?php }else{?>
+            <div style="color: red" >
+                No se han encontrado coincidencias
+            </div>
+        <?php } ?>
+
     </div>
-    </div>
-    <?php
-}
-?>
+</div>

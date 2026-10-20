@@ -93,7 +93,7 @@ class TrabajadorController extends BaseController
     }
 
 
-    public function ejercicioTrabajadoresFiltros(String $username =''): void
+    public function ejercicioTrabajadoresFiltros(): void
     {
         $data = array(
             'titulo' => 'Ejercicio Tabajadores',
@@ -102,25 +102,19 @@ class TrabajadorController extends BaseController
 
         $modelTrabajador = new TrabajadorModel();
 
-        $trabajadores = [];
+        $username = $_GET['username'] ?? '';
         if($username !== ''){
             trim($username);
             $trabajadores = $modelTrabajador ->whereName($username);
-        }
-        if(empty($trabajadores)){
-            $data['trabajadores'] = $modelTrabajador -> getTrabajadores();
-        }else{
             $data['trabajadores'] = $trabajadores;
+        }else{
+            $data['trabajadores'] = $modelTrabajador -> getTrabajadores();
         }
 
         $data['roles'] = $modelTrabajador -> getRoles(); ;
+        $data['username'] = $username;
 
         $this->view->showViews(array('templates/header.view.php', 'ejercicioTrabajadoreFiltros.view.php', 'templates/footer.view.php'), $data);
-    }
-
-    private function conectarFiltros():void{
-        $username = $_GET['username'];
-        $this->ejercicioTrabajadoresFiltros($username);
     }
 
 
