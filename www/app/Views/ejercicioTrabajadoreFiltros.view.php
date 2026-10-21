@@ -32,19 +32,26 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="alias">Username:</label>
-                                <input type="text" class="form-control" name="username" id="username" value=<?php echo $username ?? '' ?>>
+                                <input type="text" class="form-control" name="username" id="username" value=<?php echo $input["username"]; ?>> ?? '' ?>>
                             </div>
                         </div>
                         <?php
-                            if(!empty($roles)):
+                            if(!empty($input["roles"])):
                                 ?>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_rol">Rol:</label>
                                 <select name="rol" id="rol" class="form-control" data-placeholder="Rol">
-                                <option value="">-</option>
-                                    <?php foreach ($roles as $rol => $dataRol): ?>
-                                    <option> <?php echo $dataRol['rol']?></option>
+                                    <option value="">-</option>
+                                    <?php foreach ($input["roles"] as $rol => $dataRol): ?>
+                                    <option value="<?php echo $dataRol['id_rol']?>"
+                                            <?php if(isset($rolFiltro)):
+                                        if((int)$dataRol['id_rol']==(int)$rolFiltro):
+                                            echo 'selected'  ;
+                                        else:
+                                            echo'';
+                                        endif;
+                                        endif;?>> <?php echo $dataRol['nombre_rol']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -52,6 +59,17 @@ declare(strict_types=1);
                         <?php
                         endif;
                         ?>
+
+                        <div class="col-12 col-lg-2">
+                            <div class="mb-3">
+                                <label for="alias">Valor Minimo:</label>
+                                <input type="text" class="form-control" name="salarioMinBruto" id="salarioMinBruto" placeholder="0"  value=<?php echo $username ?? '' ?>>
+                              </div>
+                            <div class="mb-3">
+                                <label for="alias">Valor Maximo:</label>
+                                <input type="text" class="form-control" name="username" id="username" value=<?php echo $username ?? '' ?>>
+                            </div>
+                        </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_continente">Continente:</label>

@@ -101,18 +101,25 @@ class TrabajadorController extends BaseController
         );
 
         $modelTrabajador = new TrabajadorModel();
-
+        $roles = $modelTrabajador -> getRoles(); ;
+        $idRol = $_GET['rol'] ?? '';
+        $data['roles'] = $roles;
         $username = $_GET['username'] ?? '';
         if($username !== ''){
-            trim($username);
             $trabajadores = $modelTrabajador ->whereName($username);
             $data['trabajadores'] = $trabajadores;
         }else{
             $data['trabajadores'] = $modelTrabajador -> getTrabajadores();
         }
 
-        $data['roles'] = $modelTrabajador -> getRoles(); ;
+        if($idRol !== ''){
+            $data['trabajadores'] = $modelTrabajador ->whereIdRol($idRol);
+            $data['rolFiltro'] = $idRol;
+        }
+
+        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['username'] = $username;
+        $data['input'] = $input;
 
         $this->view->showViews(array('templates/header.view.php', 'ejercicioTrabajadoreFiltros.view.php', 'templates/footer.view.php'), $data);
     }
