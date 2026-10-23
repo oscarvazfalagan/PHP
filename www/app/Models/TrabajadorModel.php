@@ -10,6 +10,14 @@ class TrabajadorModel extends BaseDbModel
 {
     private const string SELECT_FROM = "SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country";
 
+
+    public function getFilterby(array $filtro): array{
+        $allConditionsFilter = [];
+        if(!empty($filtro["username"])){
+
+        }
+
+    }
     public function getTrabajadores():array{
             $sql = self::SELECT_FROM;
             $stmt = $this->pdo->query($sql);
@@ -17,12 +25,9 @@ class TrabajadorModel extends BaseDbModel
 
    }
 
-   public function getRoles():array{
-       $roles = $this->pdo->query('SELECT * FROM aux_rol_trabajador')->fetchAll();
-       return $roles;
-    }
+
     public function whereName($username):array{
-        $sql = 'SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country WHERE username LIKE :username';
+        $sql = self::SELECT_FROM . " WHERE username LIKE :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => "%{$username}%"]);
         return $stmt->fetchAll();

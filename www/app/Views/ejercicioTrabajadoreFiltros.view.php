@@ -32,18 +32,18 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="alias">Username:</label>
-                                <input type="text" class="form-control" name="username" id="username" value=<?php echo $input["username"]; ?>> ?? '' ?>>
+                                <input type="text" class="form-control" name="username" id="username" value="<?php echo $input["username"] ?? ''; ?>"/>
                             </div>
                         </div>
                         <?php
-                            if(!empty($input["roles"])):
+                            if(!empty($roles)):
                                 ?>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_rol">Rol:</label>
                                 <select name="rol" id="rol" class="form-control" data-placeholder="Rol">
                                     <option value="">-</option>
-                                    <?php foreach ($input["roles"] as $rol => $dataRol): ?>
+                                    <?php foreach ($roles as $rol => $dataRol): ?>
                                     <option value="<?php echo $dataRol['id_rol']?>"
                                             <?php if(isset($rolFiltro)):
                                         if((int)$dataRol['id_rol']==(int)$rolFiltro):
@@ -63,11 +63,11 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-2">
                             <div class="mb-3">
                                 <label for="alias">Valor Minimo:</label>
-                                <input type="text" class="form-control" name="salarioMinBruto" id="salarioMinBruto" placeholder="0"  value=<?php echo $username ?? '' ?>>
+                                <input type="text" class="form-control" name="salarioMinBruto" id="salarioMinBruto" placeholder="0"  value=""/>
                               </div>
                             <div class="mb-3">
                                 <label for="alias">Valor Maximo:</label>
-                                <input type="text" class="form-control" name="username" id="username" value=<?php echo $username ?? '' ?>>
+                                <input type="text" class="form-control" name="" id="salarioMaximoBruto" value="">
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
