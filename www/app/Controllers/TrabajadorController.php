@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Com\Daw2\Controllers;
 
 use Com\Daw2\Core\BaseController;
+use Com\Daw2\Models\AuxCountries;
 use Com\Daw2\Models\AuxRolTrabajadores;
 use Com\Daw2\Models\TrabajadorModel;
 
@@ -101,27 +102,34 @@ class TrabajadorController extends BaseController
             'breadcrumb' => ['Inicio', 'Trabajadores'],
         );
 
-        $username = $_GET ['username'] ?? '';
+
         $idRol = $_GET ['rol'] ?? '';
+
+
 
         $modelTrabajador = new TrabajadorModel();
         $modelRoles = new AuxRolTrabajadores();
+        $modelCountry = new AuxCountries();
 
+        $data['countrys'] = $modelCountry->getCountries();
         $data['roles'] = $modelRoles->getRoles();
-
         $data['rolFiltro'] = $idRol;
+        $data['order'] = $modelTrabajador->getOrderIndex($_GET);
 
+        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-
-        if ($username !== '') {
-            $data['trabajadores'] = $modelTrabajador->whereName($username);
-        } elseif ($idRol !== '') {
-            $data['trabajadores'] = $modelTrabajador->whereIdRol($idRol);
-        } else {
+        if ($input !== []) {
+            $data['trabajadores'] = $modelTrabajador->getFilterby($_GET);
+        }else{
             $data['trabajadores'] = $modelTrabajador->getTrabajadores();
         }
-        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['input'] = $input;
+        $getOrder = $_GET;
+        unset($getOrder['order']);
+        unset($getOrder['sentido']);
+        unset($getOrder['page']);
+        $data['queryParams'] = http_build_query($getOrder);
+
         $this->view->showViews(array('templates/header.view.php', 'ejercicioTrabajadoreFiltros.view.php', 'templates/footer.view.php'), $data);
     }
 

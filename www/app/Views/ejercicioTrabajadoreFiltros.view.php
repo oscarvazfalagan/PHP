@@ -20,7 +20,7 @@ declare(strict_types=1);
     <div class="col-12">
         <div class="card shadow mb-4">
             <form method="get" >
-                <input type="hidden" name="order" value="1"/>
+                <input type="hidden" name="order" value="<?php echo $order; ?>"/>
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
@@ -63,20 +63,37 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-2">
                             <div class="mb-3">
                                 <label for="alias">Valor Minimo:</label>
-                                <input type="text" class="form-control" name="salarioMinBruto" id="salarioMinBruto" placeholder="0"  value=""/>
+                                <input type="text" class="form-control" name="salarioMinBruto" id="salarioMinBruto" placeholder="0"  value="<?php echo $input["salarioMinBruto"] ?? ''; ?>"/>
                               </div>
                             <div class="mb-3">
                                 <label for="alias">Valor Maximo:</label>
-                                <input type="text" class="form-control" name="" id="salarioMaximoBruto" value="">
+                                <input type="text" class="form-control" name="salarioMaximoBruto" id="salarioMaximoBruto"  placeholder="5000" value="<?php echo $input["salarioMaximoBruto"] ?? ''; ?>">
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-2">
+                            <div class="mb-3">
+                                <label for="alias">Retencion Minima:</label>
+                                <input type="text" class="form-control" name="retencionMin" id="retencionMin" placeholder="0"  value="<?php echo $input["retencionMin"] ?? ''; ?>"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="alias">Retencion Maxima:</label>
+                                <input type="text" class="form-control" name="retencionMax" id="retencionMax"  placeholder="30" value="<?php echo $input["retencionMax"] ?? ''; ?>">
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_continente">Continente:</label>
-                                <select name="id_continente" id="id_continente" class="form-control" data-placeholder="Continente">
-                                    <option value="">-</option>
-                                    <option value="1" >Europa</option>
-                                    <option value="2" >Asia</option>
+                                <select name="idCountry[]" id="idCountry" class="form-control select2" data-placeholder="Continente" multiple>
+                                    <?php foreach ($countrys as $country => $dataCountry): ?>
+                                        <option value="<?php echo $dataCountry['id'] ?>"
+                                                <?php if(isset($input['idCountry'])):
+                                                    if(in_array($dataCountry['id'], $input['idCountry'])):
+                                                        echo 'selected'  ;
+                                                    else:
+                                                        echo'';
+                                                    endif;
+                                                endif;?>> <?php echo $dataCountry['country_name']?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -96,16 +113,15 @@ declare(strict_types=1);
     <div class="col-12">
         <?php  if(!empty($trabajadores)){?>
         <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>USERNAME</th>
-                <th>SALARIO BRUTO</th>
-                <th>RETENCION IRPF</th>
-                <th>ACTIVO</th>
-                <th>ROL</th>
-                <th>COUNTRY</th>
-            </tr>
-            </thead>
+            <?php
+            require_once '../app/Helpers/fomr_helper.php';
+            echo printTableHeader(
+                    ['Username', 'Salario Bruto', 'Retención', 'Rol', 'País'],
+                    $order,
+                    $input['sentido'] ?? null,
+                    $queryParams
+            );
+            ?>
             <tbody>
             <?php
             foreach ($trabajadores as $trabajador => $datos) {
@@ -114,7 +130,6 @@ declare(strict_types=1);
                     <td><?php echo $datos['username'] ?></td>
                     <td><?php echo $datos['salarioBruto'] ?></td>
                     <td><?php echo $datos['retencionIRPF'] ?></td>
-                    <td><?php echo $datos['activo'] ?></td>
                     <td><?php echo $datos['nombre_rol'] ?></td>
                     <td><?php echo $datos['country_name'] ?></td>
                 </tr>
@@ -130,6 +145,38 @@ declare(strict_types=1);
                 No se han encontrado coincidencias
             </div>
         <?php } ?>
+        <div class="card-footer">
+            <nav aria-label="Navegacion por paginas">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="/proveedores?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">First</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/proveedores?page=2&o" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="/proveedores?page=4&order=1" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/proveedores?page=8&order=1" aria-label="Last">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
     </div>
 </div>

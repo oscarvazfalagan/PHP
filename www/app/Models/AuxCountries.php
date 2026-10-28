@@ -9,5 +9,9 @@ use PDO;
 
 class AuxCountries extends BaseDbModel
 {
+    public function getCountries():array{
+        $roles = $this->pdo->query('SELECT * FROM aux_countries')->fetchAll();
+        return $roles;
+    }
 
 }
