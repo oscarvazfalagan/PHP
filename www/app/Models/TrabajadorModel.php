@@ -9,8 +9,10 @@ use PDO;
 class TrabajadorModel extends BaseDbModel
 {
     private const string SELECT_FROM = "SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country ";
+    private const string SELECT_COUNT = "SELECT COUNT(*) FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country ";
     private const array ORDER_FIELDS = ['t.username', 't.salarioBruto', 't.retencionIRPF', 'nombre_rol', 'country_name'];
     private const DEFAULT_ORDER_INDEX = 1;
+    private const DEFAULT_ORDER_PAGES = 1;
     private const NUMBER_OF_ITEMS_IN_PAGE = 20;
 
     public function getFilterby(array $filtros): array
@@ -49,14 +51,19 @@ class TrabajadorModel extends BaseDbModel
             $values = array_merge($values, $countries);
         }
         $sql = self::SELECT_FROM;
+        $sqlCount = self :: SELECT_COUNT;
         if($allConditionsFilter !== []){
-            $sql .= " WHERE " . implode(" AND ", $allConditionsFilter);
+            $whereClauses = " WHERE " . implode(" AND ", $allConditionsFilter);;
+            $sql .=  $whereClauses;
+            $sqlCount .= $whereClauses;
         }
+
+
+        $pages = $this->getPages($filtros,$sqlCount,$values);
+        $iniciolimit = ($pages['currentPage'] - 1)*self::NUMBER_OF_ITEMS_IN_PAGE;
         $sentido = !empty($filtros['sentido']) && $filtros['sentido'] === 'desc' ? 'DESC' : 'ASC';
-        $page = !empty($filtros['page']) ?  1 : $filtros['page'];
-        $limit = ($page - 1)*self::NUMBER_OF_ITEMS_IN_PAGE;
         $sql .= " ORDER BY " . self::ORDER_FIELDS[$this->getOrderIndex($filtros) - 1] . " $sentido";
-        $sql .= " LIMIT ". $limit ." , ". self::NUMBER_OF_ITEMS_IN_PAGE;
+        $sql .= " LIMIT ". $iniciolimit ." , ". self::NUMBER_OF_ITEMS_IN_PAGE;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($values);
@@ -73,16 +80,34 @@ class TrabajadorModel extends BaseDbModel
             return (int)$filtros['order'];
         }
     }
-    public function getOrderPage(array $filtros): int
+
+
+    public function getPages(array $filtros,$sqlCount='',$values=[]): array
     {
-        if (empty($filtros['order'])) {
-            return self::DEFAULT_ORDER_INDEX;
-        } elseif (filter_var($filtros['order'], FILTER_VALIDATE_INT) === false || $filtros['order'] < 1 || $filtros['order'] > count(self::ORDER_FIELDS)) {
-            return self::DEFAULT_ORDER_INDEX;
-        } else {
-            return (int)$filtros['order'];
+        $page = $filtros['page'] ?? self::DEFAULT_ORDER_PAGES;
+        $lastPages= PHP_INT_MAX;
+        if (filter_var($page, FILTER_VALIDATE_INT) === false || $page < 1) {
+            return self::DEFAULT_ORDER_PAGES;
         }
+        if($sqlCount !== ''){
+            $stmtCount = $this->pdo->prepare($sqlCount);
+            $stmtCount->execute($values);
+            $totalRegistros = (int)$stmtCount->fetchColumn();
+            $lastPages = (int)ceil($totalRegistros / self::NUMBER_OF_ITEMS_IN_PAGE);
+        }
+        if($page>$lastPages){
+            $page = $lastPages;
+        }
+        if($lastPages < 1){
+            $lastPages = 1;
+        }
+
+        return [
+            'currentPage'=>(int)$page
+            ,'lastPage'=>(int)$lastPages
+        ];
     }
+
 
 
     public function getTrabajadores():array{
@@ -105,6 +130,7 @@ class TrabajadorModel extends BaseDbModel
         $stmt->execute(['idRol' => "$idRol"]);
         return $stmt->fetchAll();
     }
+
 
 
 }

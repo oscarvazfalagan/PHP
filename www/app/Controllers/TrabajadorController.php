@@ -116,22 +116,27 @@ class TrabajadorController extends BaseController
         $data['rolFiltro'] = $idRol;
         $data['order'] = $modelTrabajador->getOrderIndex($_GET);
 
+
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if ($input !== []) {
+
+            $modelPages = $modelTrabajador->getPages($_GET);
             $data['trabajadores'] = $modelTrabajador->getFilterby($_GET);
-        }else{
-            $data['trabajadores'] = $modelTrabajador->getTrabajadores();
-        }
+            $data['currentPage'] = $modelPages['currentPage'];
+            $data['lastPage'] = $modelPages['lastPage'];
+
         $data['input'] = $input;
         $getOrder = $_GET;
+        $getPage = $_GET;
         unset($getOrder['order']);
         unset($getOrder['sentido']);
-        unset($getOrder['page']);
         $data['queryParams'] = http_build_query($getOrder);
+        unset($getPage['page']);
+        $data['queryParamsPage'] = http_build_query($getPage);
 
         $this->view->showViews(array('templates/header.view.php', 'ejercicioTrabajadoreFiltros.view.php', 'templates/footer.view.php'), $data);
     }
+
 
 
 }

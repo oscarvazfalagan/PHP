@@ -148,32 +148,35 @@ declare(strict_types=1);
         <div class="card-footer">
             <nav aria-label="Navegacion por paginas">
                 <ul class="pagination justify-content-center">
+                    <?php if($currentPage > 1):?>
                     <li class="page-item">
-                        <a class="page-link" href="/proveedores?page=1" aria-label="First">
+                        <a class="page-link" href="/trabajadorControllerFiltros?<?php echo $queryParamsPage ?>&page=1" aria-label="First">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">First</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="/proveedores?page=2&o" aria-label="Previous">
+                        <a class="page-link" href="/trabajadorControllerFiltros?<?php echo $queryParamsPage ?>&page=<?php echo $currentPage-1?>" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                             <span class="sr-only">Previous</span>
                         </a>
                     </li>
-
-                    <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                    <?php endif;?>
+                    <li class="page-item active"><a class="page-link" href="#"><?php echo $currentPage?></a></li>
+                    <?php if($currentPage < $lastPage):?>
                     <li class="page-item">
-                        <a class="page-link" href="/proveedores?page=4&order=1" aria-label="Next">
+                        <a class="page-link" href="/trabajadorControllerFiltros?<?php echo $queryParamsPage ?>&page=<?php echo $currentPage+1?>" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                             <span class="sr-only">Next</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="/proveedores?page=8&order=1" aria-label="Last">
+                        <a class="page-link" href="/trabajadorControllerFiltros?<?php echo $queryParamsPage ?>&page=<?php echo $lastPage?>" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Last</span>
                         </a>
                     </li>
+                    <?php endif;?>
                 </ul>
             </nav>
         </div>
