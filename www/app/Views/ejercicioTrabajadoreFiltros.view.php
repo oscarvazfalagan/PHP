@@ -20,7 +20,7 @@ declare(strict_types=1);
     <div class="col-12">
         <div class="card shadow mb-4">
             <form method="get" >
-                <input type="hidden" name="order" value="<?php echo $order; ?>"/>
+                <input type="hidden" name="order" value="1"/>
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
@@ -180,6 +180,41 @@ declare(strict_types=1);
                 </ul>
             </nav>
         </div>
+        div class="col-12">
+        <?php  if(!empty($usuarios)){?>
+        <table class="table table-striped">
+            <?php
+            require_once '../app/Helpers/fomr_helper.php';
+            echo printTableHeader(
+                    ['rol', 'email', 'nombre', 'idioma', 'acceso'],
+                    $order,
+                    $input['sentido'] ?? null,
+                    $queryParams
+            );
+            ?>
+            <tbody>
+            <?php
+            foreach ($usuarios as $usuario => $dataUsuario) {
+                ?>
+                <tr>
+                    <td><?php echo $dataUsuario['rol'] ?></td>
+                    <td><?php echo $dataUsuario['email'] ?></td>
+                    <td><?php echo $dataUsuario['nombre'] ?></td>
+                    <td><?php echo $dataUsuario['idioma'] ?></td>
+                    <td><?php echo $dataUsuario['acceso'] ?></td>
+                </tr>
+                <tr>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+        <?php }else{?>
+            <div style="color: red" >
+                No se han encontrado coincidencias
+            </div>
+        <?php } ?>
 
     </div>
 </div>

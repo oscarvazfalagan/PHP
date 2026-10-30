@@ -276,6 +276,14 @@ class FrontController
         },
         'get'
 
+    ); Route::add(
+        '/UsuariosController',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\UsuariosController();
+            $controlador->ejercicioUsuariosFiltros();
+        },
+        'get'
+
 
 
 

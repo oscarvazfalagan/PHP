@@ -19,6 +19,7 @@ declare(strict_types=1);
                 <th>ID_COUNTRY</th>
             </tr>
             </thead>
+
             <tbody>
             <?php
             foreach ($trabajadores as $trabajador => $datos) {
