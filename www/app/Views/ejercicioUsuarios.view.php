@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 ?>
 
-
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 <!--Inicio HTML -->
 <div class="row">
     <div class="col-12">
@@ -80,7 +82,22 @@ declare(strict_types=1);
                                 <input type="text" class="form-control" name="nombre" id="nombre" value="<?php echo $input["nombre"] ?? ''; ?>"/>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-8">
+
+                            <label for="alias">Ultimo Acesso:</label>
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <input type="text" class="form-control" name="fechaInicio" id="fechaInicio" value="<?php echo $input["fechaInicio"] ?? ''; ?>" placeholder="Fecha Inicio"/>
+                                </div>
+                                <div class="col-12 col-lg-4 " >
+                                        <input type="text" class="form-control" name="fechaFinal" id="fechaFinal" value="<?php echo $input["fechaFinal"] ?? ''; ?>"placeholder="Fecha Final"/>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
+
 
                 </div>
                 <div class="card-footer">
@@ -96,8 +113,8 @@ declare(strict_types=1);
                 <?php
                 require_once '../app/Helpers/fomr_helper.php';
                 echo printTableHeader(
-                        ['Rol', 'Email', 'Nombre', 'Idioma', 'UtimaFecha'],
-                        1,
+                        ['Rol', 'Email', 'Nombre', 'Idioma', 'UtimaFecha','Acciones'],
+                        $order,
                         $input['sentido'] ?? null,
                         $queryParams ?? ''
                 );
@@ -106,12 +123,17 @@ declare(strict_types=1);
                 <?php
                 foreach ($usuarios as $usuario => $dataUsuario) {
                     ?>
-                    <tr>
+                    <tr class="<?php echo $dataUsuario['baja'] ? 'bg-danger' : ''?>">
                         <td><?php echo $dataUsuario['rol'] ?></td>
                         <td><?php echo $dataUsuario['email'] ?></td>
                         <td><?php echo $dataUsuario['nombre'] ?></td>
                         <td><?php echo $dataUsuario['idioma'] ?></td>
                         <td><?php echo $dataUsuario['last_date'] ?></td>
+                        <td>
+                            <a class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="mailto:<?php echo $dataUsuario['email'] ?>" class="btn btn-sm btn-primary" title="email"><i class="fa-solid fa-envelope"></i></a>
+                            <a class="btn btn-sm btn-danger" title="delete"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
                     </tr>
                     <tr>
                     </tr>
@@ -125,6 +147,42 @@ declare(strict_types=1);
                     No se han encontrado coincidencias
                 </div>
             <?php } ?>
-        </div>
+            </div>
+            <div class="card-footer">
+                <nav aria-label="Navegacion por paginas">
+                    <ul class="pagination justify-content-center">
+                        <?php if($currentPage > 1):?>
+                            <li class="page-item">
+                                <a class="page-link" href="/UsuariosController?<?php echo $queryParamsPage ?>&page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">First</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="/UsuariosController?<?php echo $queryParamsPage ?>&page=<?php echo $currentPage-1?>" aria-label="Previous">
+                                    <span aria-hidden="true">&lt;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <li class="page-item active"><a class="page-link" href="/UsuariosController?<?php echo $queryParamsPage ?>&page=<?php echo $currentPage?>"><?php echo $currentPage?></a></li>
+                        <?php if($currentPage < $lastPage):?>
+                            <li class="page-item">
+                                <a class="page-link" href="/UsuariosController?<?php echo $queryParamsPage ?>&page=<?php echo $currentPage+1?>" aria-label="Next">
+                                    <span aria-hidden="true">&gt;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="/UsuariosControllers?<?php echo $queryParamsPage ?>&page=<?php echo $lastPage?>" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Last</span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                    </ul>
+                </nav>
+            </div>
+
     </div>
 </div>

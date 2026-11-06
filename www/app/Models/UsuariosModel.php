@@ -8,6 +8,11 @@ use Com\Daw2\Core\BaseDbModel;
 class UsuariosModel extends BaseDbModel
 {
     private const string SELECT_ALL = "SELECT usr.* , aux.rol FROM usuario_sistema usr LEFT JOIN aux_rol  aux ON usr.id_rol = aux.id_rol";
+    private const string SELECT_COUNT = "SELECT COUNT(*) FROM usuario_sistema usr LEFT JOIN aux_rol  aux ON usr.id_rol = aux.id_rol ";
+    private const int DEFAULT_ORDER = 1;
+    private const int DEFAULT_PAGE = 1;
+    private const int ELEMENTS_FOR_PAGE = 20;
+    private const array ORDER_FIELDS= ['aux.rol','usr.email','usr.nombre','usr.idioma','usr.last_date'];
     public function getUsuarios(array $filtros) :array{
             $values = [];
             $allConditionsFilter = [];
@@ -37,17 +42,60 @@ class UsuariosModel extends BaseDbModel
             }
 
             $sql = self :: SELECT_ALL;
+            $sqlCount = self :: SELECT_COUNT;
             if(!empty($allConditionsFilter)){
-                $sql .= " WHERE " . implode(" AND ", $allConditionsFilter);
+                $conditions = " WHERE " . implode(" AND ", $allConditionsFilter);
+                $sql .= $conditions;
+                $sqlCount = $conditions;
             }
+            $stmtCount = $this->pdo->prepare($sqlCount);
+            $stmtCount->execute($values);
+            $totalRegistros = (int)$stmtCount->fetchColumn();
+            $lastPages = (int)ceil($totalRegistros / self::ELEMENTS_FOR_PAGE);
+            $page = $this->getPage();
+            if($page>$lastPages){
+                $page = $lastPages;
+            }
+            if($lastPages < 1){
+                $lastPages = 1;
+            }
+            $limit = ($page-1) *  self::ELEMENTS_FOR_PAGE;
 
+            $sentido = !empty($filtros['sentido']) && $filtros['sentido'] === 'desc' ? 'DESC' : 'ASC';
+            $sql .= " ORDER BY " . self::ORDER_FIELDS[$this->getOrder($filtros) - 1] . " $sentido";
+            $sql .= " LIMIT ".$limit.", ".self::ELEMENTS_FOR_PAGE;
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($values);
-            return $stmt->fetchAll();
+            return [
+               'usuarios' => $stmt->fetchAll(),
+                'lastPage' => $lastPages
+            ];
     }
 
     public function getIdiomas() :array{
         $idiomas = $this->pdo->query('SELECT DISTINCT idioma FROM usuario_sistema')->fetchAll();
         return $idiomas;
     }
+
+    public function getOrder(array $filtros) :int{
+        if(empty($filtros['order'])){
+            return self::DEFAULT_ORDER;
+        }elseif (filter_var($filtros['order'], FILTER_VALIDATE_INT) === false || $filtros['order'] < 1 || $filtros['order'] > count(self::ORDER_FIELDS)) {
+            return self::DEFAULT_ORDER;
+        }else{
+            return  (int)$filtros['order'];
+        }
+    }
+
+    public function getPage() :int{
+        if(empty($filtros['page'])){
+            return self::DEFAULT_PAGE;
+        }elseif (filter_var($filtros['order'], FILTER_VALIDATE_INT) === false || $filtros['order'] < 1){
+            return self::DEFAULT_ORDER;
+        }else{
+            return(int)$filtros['page'];
+        }
+    }
+
+
 }
