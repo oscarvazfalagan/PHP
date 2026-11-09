@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 ?>
 
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
 <!--Inicio HTML -->
 <div class="row">
     <div class="col-12">
@@ -86,7 +83,7 @@ declare(strict_types=1);
 
                             <label for="alias">Ultimo Acesso:</label>
                             <div class="row">
-                                <div class="col-12 col-lg-4">
+                                <div class="col-12+ col-lg-4">
                                     <input type="text" class="form-control" name="fechaInicio" id="fechaInicio" value="<?php echo $input["fechaInicio"] ?? ''; ?>" placeholder="Fecha Inicio"/>
                                 </div>
                                 <div class="col-12 col-lg-4 " >
@@ -130,8 +127,8 @@ declare(strict_types=1);
                         <td><?php echo $dataUsuario['idioma'] ?></td>
                         <td><?php echo $dataUsuario['last_date'] ?></td>
                         <td>
-                            <a class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
                             <a href="mailto:<?php echo $dataUsuario['email'] ?>" class="btn btn-sm btn-primary" title="email"><i class="fa-solid fa-envelope"></i></a>
+                            <a class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
                             <a class="btn btn-sm btn-danger" title="delete"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>
@@ -174,7 +171,7 @@ declare(strict_types=1);
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="/UsuariosControllers?<?php echo $queryParamsPage ?>&page=<?php echo $lastPage?>" aria-label="Last">
+                                <a class="page-link" href="/UsuariosController?<?php echo $queryParamsPage ?>&page=<?php echo $lastPage?>" aria-label="Last">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Last</span>
                                 </a>

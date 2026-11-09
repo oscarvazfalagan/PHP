@@ -29,6 +29,9 @@
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Select 2 -->
     <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+    <!-- FoontAwesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 
     <link rel="stylesheet"
           href="<?php echo isset($_COOKIE['dark_mode']) && $_COOKIE['dark_mode'] ? 'plugins/select2-bootstrap4-theme/select2-bootstrap4-dark.css' : 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'; ?>">

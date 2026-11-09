@@ -21,9 +21,10 @@ declare(strict_types=1);
         <div class="card shadow mb-4">
             <form method="get" >
                 <input type="hidden" name="order" value="1"/>
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3 d-flex flex-row align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+                    <!-- ml-auto empuja el elemento a la derecha -->
+                    <a href="/trabajadorControllerFiltros/new/" value="" name="new" class="btn btn-info ml-auto" >Añadir trabajador -></a>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -116,7 +117,7 @@ declare(strict_types=1);
             <?php
             require_once '../app/Helpers/fomr_helper.php';
             echo printTableHeader(
-                    ['Username', 'Salario Bruto', 'Retención', 'Rol', 'País'],
+                    ['Username', 'Salario Bruto', 'Retención', 'Rol', 'País','Acciones'],
                     $order,
                     $input['sentido'] ?? null,
                     $queryParams
@@ -132,6 +133,10 @@ declare(strict_types=1);
                     <td><?php echo $datos['retencionIRPF'] ?></td>
                     <td><?php echo $datos['nombre_rol'] ?></td>
                     <td><?php echo $datos['country_name'] ?></td>
+                    <td>
+                        <a class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="btn btn-sm btn-danger" title="delete"><i class="fa-solid fa-trash-can"></i></a>
+                    </td>
                 </tr>
                 <tr>
                 </tr>
@@ -180,41 +185,7 @@ declare(strict_types=1);
                 </ul>
             </nav>
         </div>
-        div class="col-12">
-        <?php  if(!empty($usuarios)){?>
-        <table class="table table-striped">
-            <?php
-            require_once '../app/Helpers/fomr_helper.php';
-            echo printTableHeader(
-                    ['rol', 'email', 'nombre', 'idioma', 'acceso'],
-                    $order,
-                    $input['sentido'] ?? null,
-                    $queryParams
-            );
-            ?>
-            <tbody>
-            <?php
-            foreach ($usuarios as $usuario => $dataUsuario) {
-                ?>
-                <tr>
-                    <td><?php echo $dataUsuario['rol'] ?></td>
-                    <td><?php echo $dataUsuario['email'] ?></td>
-                    <td><?php echo $dataUsuario['nombre'] ?></td>
-                    <td><?php echo $dataUsuario['idioma'] ?></td>
-                    <td><?php echo $dataUsuario['acceso'] ?></td>
-                </tr>
-                <tr>
-                </tr>
-                <?php
-            }
-            ?>
-            </tbody>
-        </table>
-        <?php }else{?>
-            <div style="color: red" >
-                No se han encontrado coincidencias
-            </div>
-        <?php } ?>
+
 
     </div>
 </div>

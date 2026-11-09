@@ -14,6 +14,7 @@ class UsuariosController extends BaseController
     $data = array(
                 'titulo' => 'Usuarios',
                 'breadcrumb' => ['Inicio', 'Usuarios'],
+                'js' => ['assets/js/pages/usuarios-sistema.js']
      );
 
     $modelRoles = new AuxRol();
@@ -24,7 +25,7 @@ class UsuariosController extends BaseController
     $data['lastPage'] = $usuarios['lastPage'];
     $data['idiomas'] = $modelUsuarios ->getIdiomas();
     $data['order'] = $modelUsuarios ->getOrder($_GET);
-    $data['currentPage'] = $modelUsuarios ->getPage();
+    $data['currentPage'] = $modelUsuarios ->getPage($_GET);
     $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $data['idiomaFiltro'] = $_GET['idioma'] ?? '';
     $data['input'] = $input;
@@ -35,6 +36,7 @@ class UsuariosController extends BaseController
     unset($getPage['page']);
     $data['queryParams'] = http_build_query($getOrder);
     $data['queryParamsPage'] = http_build_query($getPage);
+    $data['js'] = ['assets/js/pages/usuarios-sistema.js'];
     $this->view->showViews(array('templates/header.view.php', 'ejercicioUsuarios.view.php', 'templates/footer.view.php'), $data);
     }
 

@@ -11,7 +11,7 @@ class UsuariosModel extends BaseDbModel
     private const string SELECT_COUNT = "SELECT COUNT(*) FROM usuario_sistema usr LEFT JOIN aux_rol  aux ON usr.id_rol = aux.id_rol ";
     private const int DEFAULT_ORDER = 1;
     private const int DEFAULT_PAGE = 1;
-    private const int ELEMENTS_FOR_PAGE = 20;
+    private const int ELEMENTS_FOR_PAGE = 1;
     private const array ORDER_FIELDS= ['aux.rol','usr.email','usr.nombre','usr.idioma','usr.last_date'];
     public function getUsuarios(array $filtros) :array{
             $values = [];
@@ -25,7 +25,7 @@ class UsuariosModel extends BaseDbModel
                 $values["nombre"] = "%".$filtros['nombre']."%";
             }
             if(!empty($filtros['idioma'])){
-                $allConditionsFilter[] = " usr.idioma LIKE :idioma";
+                $allConditionsFilter[] = " usr.idioma = :idioma";
                 $values["idioma"] = "%".$filtros['idioma']."%";
             }
 
@@ -39,6 +39,21 @@ class UsuariosModel extends BaseDbModel
                 $claves = array_keys($roles);
                 $allConditionsFilter[] = "usr.id_rol IN (" . implode(", ", $claves) . ")";
                 $values = array_merge($values, $roles);
+
+            }
+            if(!empty($filtros['fechaInicio'])){
+                $fromdate = \DateTimeImmutable::createFromFormat('d/m/Y H:i:s', $filtros['fechaInicio']);
+                if ($fromdate !== false) {
+                    $allConditionsFilter[] = 'u.last_date >= :fechaInicio';
+                    $values['fechaInicio'] = $fromdate->format('Y-m-d H:i:s');
+                }
+            }
+            if(!empty($filtros['fechaFinal'])){
+                $toDate = \DateTimeImmutable::createFromFormat('d/m/Y H:i:s', $filtros['fechaFinal']);
+                if ($toDate !== false) {
+                    $allConditionsFilter[] = 'u.last_date >= :fechaFinal';
+                    $values['fechaFinal'] = $toDate->format('Y-m-d H:i:s');
+                }
             }
 
             $sql = self :: SELECT_ALL;
@@ -46,13 +61,13 @@ class UsuariosModel extends BaseDbModel
             if(!empty($allConditionsFilter)){
                 $conditions = " WHERE " . implode(" AND ", $allConditionsFilter);
                 $sql .= $conditions;
-                $sqlCount = $conditions;
+                $sqlCount .= $conditions;
             }
             $stmtCount = $this->pdo->prepare($sqlCount);
             $stmtCount->execute($values);
             $totalRegistros = (int)$stmtCount->fetchColumn();
             $lastPages = (int)ceil($totalRegistros / self::ELEMENTS_FOR_PAGE);
-            $page = $this->getPage();
+            $page = $this->getPage($filtros);
             if($page>$lastPages){
                 $page = $lastPages;
             }
@@ -87,10 +102,10 @@ class UsuariosModel extends BaseDbModel
         }
     }
 
-    public function getPage() :int{
+    public function getPage(array $filtros) :int{
         if(empty($filtros['page'])){
             return self::DEFAULT_PAGE;
-        }elseif (filter_var($filtros['order'], FILTER_VALIDATE_INT) === false || $filtros['order'] < 1){
+        }elseif (filter_var($filtros['page'], FILTER_VALIDATE_INT) === false || $filtros['page'] < 1){
             return self::DEFAULT_ORDER;
         }else{
             return(int)$filtros['page'];
