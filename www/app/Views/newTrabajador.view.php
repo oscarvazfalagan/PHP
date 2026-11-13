@@ -21,10 +21,12 @@ declare(strict_types=1);
                         <div class="col-4 mb-3">
                             <label for="alias">Username:</label>
                             <input type="text" class="form-control" name="username" id="username" value="<?php echo $input["username"] ?? ''; ?>"/>
+                            <p class="text-danger small"><?php echo $errores['username'] ?? ''; ?></p>
                         </div>
                         <div class="col-4 mb-3">
                             <label for="alias">SalarioBruto:</label>
                             <input type="text" class="form-control" name="salarioBruto" id="salarioBruto" value="<?php echo $input["salarioBruto"] ?? ''; ?>"/>
+                            <p class="text-danger small"><?php echo $errores['salarioBruto'] ?? ''; ?></p>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
@@ -64,6 +66,7 @@ declare(strict_types=1);
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <p class="text-danger small"><?php echo $errores['id_rol'] ?? ''; ?></p>
                         <?php endif; ?>
 
                         <!-- Columna 3 (Vacía, debajo de Retencion, para mantener la cuadrícula) -->
@@ -89,7 +92,12 @@ declare(strict_types=1);
                          <?php
                          endif;
                          ?>
-
+                    </div>
+                    <div class="card-footer">
+                        <div class="col-12 text-right">
+                            <a href="/trabajadorControllerFiltros/new/" value="" name="reiniciar" class="btn btn-danger">Limpiar Datos</a>
+                            <input type="submit" value="Crear Usuario" name="enviar" class="btn btn-primary ml-2"/>
+                        </div>
                     </div>
                 </div>
             </div>

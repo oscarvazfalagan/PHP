@@ -13,4 +13,11 @@ class AuxRolTrabajadores extends BaseDbModel
         return $roles;
     }
 
+    public function checkWhereID($idRol):array{
+        $sql = ("SELECT  id_rol FROM aux_rol_trabajador WHERE id_rol == :idRol ");
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idRol' => $idRol]);
+        return $stmt->fetchAll();
+    }
+
 }

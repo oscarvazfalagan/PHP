@@ -291,6 +291,13 @@ class FrontController
         },
         'get'
 
+    ); Route::add(
+        '/trabajadorControllerFiltros/new',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\NewTrabajadorController();
+            $controlador->newTrabajador();
+        },
+        'post'
 
 
 

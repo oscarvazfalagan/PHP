@@ -14,6 +14,7 @@ class TrabajadorModel extends BaseDbModel
     private const DEFAULT_ORDER_INDEX = 1;
     private const DEFAULT_ORDER_PAGES = 1;
     private const NUMBER_OF_ITEMS_IN_PAGE = 20;
+    private const INSERT_INTO = "INSERT INTO trabajadores (username, salarioBruto, retencionIRPF, activo, id_rol, id_country) ";
 
     public function getFilterby(array $filtros): array
     {
@@ -129,6 +130,70 @@ class TrabajadorModel extends BaseDbModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idRol' => "$idRol"]);
         return $stmt->fetchAll();
+    }
+
+    public function checkTrabajadorFields($campos):array{
+       $badFields = $this->checkerEmpty($campos);
+
+       if(empty($badFields['username']) && strlen($campos['username'])<4){
+           $badFields['username'] = 'Longitud Minima de 4 Caracteres';
+       }
+        if(empty($badFields['username']) && strlen($campos['username'])>50){
+            $badFields['username'] = 'Longitud maxima de 50 Caracteres';
+        }
+        if(empty($badFields['id_rol'])){
+            $modelRol = New AuxRolTrabajadores();
+            if(!$modelRol->checkWhereID($campos['id_rol'])){
+                $badFields['id_rol'] = 'El rol no existe';
+            }
+        }
+
+        if(empty($badFields['id_country'])){
+            $modelCountries = New AuxCountries();
+            if(!$modelCountries->checkWhereID($campos['idCountry'])){
+                $badFields['id_country'] = 'El country no existe';
+            }
+        }
+
+
+        if(filter_var($campos['salarioBruto'], FILTER_VALIDATE_INT) === false ){
+            $badFields['salarioBruto'] = 'Tienes que introducir un valor numerico';
+        }else{
+            if((int)$campos['salarioBruto']>500){
+                $badFields['salarioBruto']= 'El valor del salario tiene que ser mayo a 500 ';
+            }
+        }
+
+        if(filter_var($campos['retencionIRPF'], FILTER_VALIDATE_INT) === false ){
+            $badFields['retencionIRPF'] = 'Tienes que introducir un valor numerico';
+        }else{
+            if((int)$campos['retencionIRPF']>100){
+                $badFields['retencionIRPF'] = 'Tiene que ser un valor menor a 100';
+            }
+            if((int)$campos['retencionIRPF']<0){
+                $badFields['retencionIRPF'] = 'Tiene que ser un valor mayor que 0';
+            }
+        }
+
+       if(empty($badFields)){
+            $this->crearTrabajador($campos);
+       }
+
+       return $badFields;
+    }
+
+    private function checkerEmpty($valor):array{
+        $emptyFields = [];
+        foreach ($valor as $key => $value) {
+            if (empty($value)) {
+                $emptyFields[] = [$key => 'campo vacio']; ;
+            }
+        }
+        return $emptyFields;
+    }
+
+    private function crearTrabajador(array $valor){
+
     }
 
 

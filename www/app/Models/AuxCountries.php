@@ -13,5 +13,10 @@ class AuxCountries extends BaseDbModel
         $roles = $this->pdo->query('SELECT * FROM aux_countries')->fetchAll();
         return $roles;
     }
-
+    public function checkWhereID($idCountry):array{
+        $sql = ("SELECT  id FROM aux_countries WHERE id == :idCountry ");
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idCountry' => $idCountry]);
+        return $stmt->fetchAll();
+    }
 }
