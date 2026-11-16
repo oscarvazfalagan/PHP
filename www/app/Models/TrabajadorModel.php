@@ -122,7 +122,7 @@ class TrabajadorModel extends BaseDbModel
         $sql = self::SELECT_FROM . " WHERE username LIKE :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => "%{$username}%"]);
-        return $stmt->fetchAll();
+        return $stmt->fetch();
     }
 
     public function whereIdRol($idRol):array{
@@ -195,6 +195,8 @@ class TrabajadorModel extends BaseDbModel
     private function crearTrabajador(array $valor){
 
     }
+
+
 
 
 

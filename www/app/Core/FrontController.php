@@ -299,6 +299,23 @@ class FrontController
         },
         'post'
 
+    ); Route::add(
+        '/trabajadorControllerFiltros/edit/([\p{L}0-9_]{4,50})',
+        function ($username) {
+            $controlador = new \Com\Daw2\Controllers\edicionTrabajadorController();
+            $controlador->edicionTrabajador($username);
+        },
+        'get'
+
+    ); Route::add(
+        '/trabajadorControllerFiltros/edicion',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\edicionTrabajadorController();
+            $controlador->edicionTrabajador();
+        },
+        'post'
+
+
 
 
 

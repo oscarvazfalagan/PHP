@@ -31,7 +31,7 @@ class NewTrabajadorController extends BaseController
 
     public function newTrabajador(){
         $modelTrabajador = new TrabajadorModel();
-        $errores = $modelTrabajador->checkTrabajadorFields($_GET);
+        $errores = $modelTrabajador->checkTrabajadorFields($_POST);
         $this->new($errores);
     }
 }
