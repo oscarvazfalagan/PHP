@@ -134,7 +134,7 @@ declare(strict_types=1);
                     <td><?php echo $datos['nombre_rol'] ?></td>
                     <td><?php echo $datos['country_name'] ?></td>
                     <td>
-                        <a href="/trabajadorControllerFiltros/edit/<?php $datos['username']?>" class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="/trabajadorControllerFiltros/edit/<?php echo $datos['username']?>" class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
                         <a class="btn btn-sm btn-danger" title="delete"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>

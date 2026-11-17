@@ -20,7 +20,7 @@ declare(strict_types=1);
                     <div class="row col-12 col-lg-12 ">
                         <div class="col-4 mb-3">
                             <label for="alias">Username:</label>
-                            <input type="text" class="form-control" name="username" id="username" value="<?php echo $input["username"] ?? ''; ?>"/>
+                            <input type="text" class="form-control" name="username" id="username" value="<?php echo $input["username"] ?? ''; ?>" readonly/>
                             <p class="text-danger small"><?php echo $errores['username'] ?? ''; ?></p>
                         </div>
                         <div class="col-4 mb-3">
@@ -79,15 +79,12 @@ declare(strict_types=1);
                              <div class="col-4 mb-3">
                                  <label for="id_rol">Pais :</label>
                                  <select name="Pais " id="Pais " class="form-control" data-placeholder="Rol">
-                                     <option value="">-</option>
                                      <?php foreach ($countrys as $country => $dataCountry): ?>
-                                     <option value="<?php echo $dataCountry['id'];?>"
-                                             <?php if(isset($countryFiltro)):
-                                         if((int)$dataCountry['id']==$input['id_country']):
+                                     <option value="<?php echo $input['id_country'];?>"
+                                             <?php if((int)$dataCountry['id']==$input['id_country']):
                                              echo 'selected'  ;
-                                         else:
-                                             echo'';
-                                         endif;
+                                            else:
+                                                echo'';
                                          endif;?>> <?php echo $dataCountry['country_name']?></option>
                                      <?php endforeach; ?>
                                  </select>
@@ -99,8 +96,8 @@ declare(strict_types=1);
                     </div>
                     <div class="card-footer">
                         <div class="col-12 text-right">
-                            <a href="/trabajadorControllerFiltros/new/" value="" name="reiniciar" class="btn btn-danger">Limpiar Datos</a>
-                            <input type="submit" value="Crear Usuario" name="enviar" class="btn btn-primary ml-2"/>
+                            <a href="/trabajadorControllerFiltros/" value="" name="reiniciar" class="btn btn-danger">Atras</a>
+                            <input type="submit" value="Editar" name="enviar" class="btn btn-primary ml-2"/>
                         </div>
                     </div>
                 </div>

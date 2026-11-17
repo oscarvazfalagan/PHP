@@ -137,6 +137,133 @@ class TrabajadorController extends BaseController
         $this->view->showViews(array('templates/header.view.php', 'ejercicioTrabajadoreFiltros.view.php', 'templates/footer.view.php'), $data);
     }
 
+    public function new(array $input = [],array $errores = []){
+        $data = array(
+            'titulo' => 'NewTrabajador',
+            'breadcrumb' => ['Inicio', 'NewTrabajador'],
+        );
+        $modelRoles = new AuxRolTrabajadores();
+        $roles = $modelRoles->getRoles();
+        $data['roles'] = $roles;
+        $modelCountry = new AuxCountries();
+        $countries = $modelCountry->getCountries();
+        $data['countrys'] =  $countries;
+        $data['errores']= $errores;
+        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $data['input'] = $input;
+
+
+        $this->view->showViews(array('templates/header.view.php', 'newTrabajador.view.php', 'templates/footer.view.php'), $data);
+    }
+
+    public function newTrabajador():void{
+        $errores = $this->checkTrabajadorFields($_POST);
+        if ($errores !== []){
+            $this -> new(filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),$errores);
+        } else{
+            $TrabajadorModel = new TrabajadorModel();
+            $res = $TrabajadorModel->crearTrabajador($_POST);
+            if ($res !== true) {
+                echo 'Error';
+            }
+        }
+
+
+
+    }
+
+
+    private function checkTrabajadorFields($campos):array{
+        $badFields = $this->checkerEmpty($campos);
+
+        if(empty($badFields['username']) && strlen($campos['username'])<4){
+            $badFields['username'] = 'Longitud Minima de 4 Caracteres';
+        }
+        if(empty($badFields['username']) && strlen($campos['username'])>50){
+            $badFields['username'] = 'Longitud maxima de 50 Caracteres';
+        }
+        if(empty($badFields['id_rol'])){
+            $modelRol = New AuxRolTrabajadores();
+            if(!$modelRol->checkWhereID($campos['id_rol'])){
+                $badFields['id_rol'] = 'El rol no existe';
+            }
+        }
+
+        if(empty($badFields['id_country'])){
+            $modelCountries = New AuxCountries();
+            if(!$modelCountries->checkWhereID($campos['idCountry'])){
+                $badFields['id_country'] = 'El country no existe';
+            }
+        }
+
+
+        if(filter_var($campos['salarioBruto'], FILTER_VALIDATE_INT) === false ){
+            $badFields['salarioBruto'] = 'Tienes que introducir un valor numerico';
+        }else{
+            if((int)$campos['salarioBruto']>500){
+                $badFields['salarioBruto']= 'El valor del salario tiene que ser mayo a 500 ';
+            }
+        }
+
+        if(filter_var($campos['retencionIRPF'], FILTER_VALIDATE_INT) === false ){
+            $badFields['retencionIRPF'] = 'Tienes que introducir un valor numerico';
+        }else{
+            if((int)$campos['retencionIRPF']>100){
+                $badFields['retencionIRPF'] = 'Tiene que ser un valor menor a 100';
+            }
+            if((int)$campos['retencionIRPF']<0){
+                $badFields['retencionIRPF'] = 'Tiene que ser un valor mayor que 0';
+            }
+        }
+
+        return $badFields;
+    }
+
+    private function checkerEmpty($valor):array{
+        $emptyFields = [];
+        foreach ($valor as $key => $value) {
+            if (empty($value)) {
+                $emptyFields[] = [$key => 'campo vacio']; ;
+            }
+        }
+        return $emptyFields;
+    }
+
+
+    public function edicionTrabajador(String $username){
+        $data = array(
+            'titulo' => 'Edicion de Trabajadores',
+            'breadcrumb' => ['Inicio', 'edicionTrabajadores'],
+        );
+        $modelRoles = new AuxRolTrabajadores();
+        $roles = $modelRoles->getRoles();
+        $data['roles'] = $roles;
+        $modelCountry = new AuxCountries();
+        $countries = $modelCountry->getCountries();
+        $data['countrys'] =  $countries;
+        $modelTrabajador = new TrabajadorModel();
+        $input = $modelTrabajador->whereName($username);
+        $data['input'] = $input;
+
+        $this->view->showViews(array('templates/header.view.php', 'edicionTrabajador.view.php', 'templates/footer.view.php'), $data);
+    }
+
+    public function edicionTrabajadorDO(){
+        $errores = $this->checkTrabajadorForm($_POST);
+        if ($errores !== []) {
+            $this->new(
+                filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                $errores
+            );
+        } else {
+            $trabajadoresModel = new TrabajadorModel();
+            $res = $trabajadoresModel->updateTrabajador($_POST);
+            if ($res !== true) {
+                echo 'Error';
+            }
+        }
+    }
+
 
 
 }

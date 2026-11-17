@@ -132,68 +132,21 @@ class TrabajadorModel extends BaseDbModel
         return $stmt->fetchAll();
     }
 
-    public function checkTrabajadorFields($campos):array{
-       $badFields = $this->checkerEmpty($campos);
-
-       if(empty($badFields['username']) && strlen($campos['username'])<4){
-           $badFields['username'] = 'Longitud Minima de 4 Caracteres';
-       }
-        if(empty($badFields['username']) && strlen($campos['username'])>50){
-            $badFields['username'] = 'Longitud maxima de 50 Caracteres';
-        }
-        if(empty($badFields['id_rol'])){
-            $modelRol = New AuxRolTrabajadores();
-            if(!$modelRol->checkWhereID($campos['id_rol'])){
-                $badFields['id_rol'] = 'El rol no existe';
-            }
-        }
-
-        if(empty($badFields['id_country'])){
-            $modelCountries = New AuxCountries();
-            if(!$modelCountries->checkWhereID($campos['idCountry'])){
-                $badFields['id_country'] = 'El country no existe';
-            }
-        }
 
 
-        if(filter_var($campos['salarioBruto'], FILTER_VALIDATE_INT) === false ){
-            $badFields['salarioBruto'] = 'Tienes que introducir un valor numerico';
-        }else{
-            if((int)$campos['salarioBruto']>500){
-                $badFields['salarioBruto']= 'El valor del salario tiene que ser mayo a 500 ';
-            }
-        }
 
-        if(filter_var($campos['retencionIRPF'], FILTER_VALIDATE_INT) === false ){
-            $badFields['retencionIRPF'] = 'Tienes que introducir un valor numerico';
-        }else{
-            if((int)$campos['retencionIRPF']>100){
-                $badFields['retencionIRPF'] = 'Tiene que ser un valor menor a 100';
-            }
-            if((int)$campos['retencionIRPF']<0){
-                $badFields['retencionIRPF'] = 'Tiene que ser un valor mayor que 0';
-            }
-        }
-
-       if(empty($badFields)){
-            $this->crearTrabajador($campos);
-       }
-
-       return $badFields;
+    public function crearTrabajador(array $datos){
+        $sql = "insert into trabajadores (username, salarioBruto, retencionIRPF, activo, id_rol, id_country)
+                values (:username, :salarioBruto, :retencionIRPF, :activo, :id_rol, :id_country)";
+        $insertData = array_filter($datos, fn($key) => in_array($key, $this->allowedFields), ARRAY_FILTER_USE_KEY);
+        $insertData['activo'] = !empty($datos['activo']) ? 1 : 0;
+        $stmt = $this->pdo->prepare($sql);
+        return ($stmt->execute($insertData) && $stmt->rowCount() === 1);
     }
 
-    private function checkerEmpty($valor):array{
-        $emptyFields = [];
-        foreach ($valor as $key => $value) {
-            if (empty($value)) {
-                $emptyFields[] = [$key => 'campo vacio']; ;
-            }
-        }
-        return $emptyFields;
-    }
 
-    private function crearTrabajador(array $valor){
-
+    public function updateTrabajador(array $datos){
+        $sql = "UPDATE TRABAJADORES SET username = :username,,salarioBruto = :salarioBruto,retencionIRPF = :retencionIRPF,activo = :activo,id_rol = :id_rol,id_country = :id_country "
     }
 
 

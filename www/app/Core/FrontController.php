@@ -286,7 +286,7 @@ class FrontController
     ); Route::add(
         '/trabajadorControllerFiltros/new',
         function () {
-            $controlador = new \Com\Daw2\Controllers\NewTrabajadorController();
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
             $controlador->new();
         },
         'get'
@@ -294,7 +294,7 @@ class FrontController
     ); Route::add(
         '/trabajadorControllerFiltros/new',
         function () {
-            $controlador = new \Com\Daw2\Controllers\NewTrabajadorController();
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
             $controlador->newTrabajador();
         },
         'post'
@@ -302,18 +302,19 @@ class FrontController
     ); Route::add(
         '/trabajadorControllerFiltros/edit/([\p{L}0-9_]{4,50})',
         function ($username) {
-            $controlador = new \Com\Daw2\Controllers\edicionTrabajadorController();
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
             $controlador->edicionTrabajador($username);
         },
         'get'
 
     ); Route::add(
-        '/trabajadorControllerFiltros/edicion',
+        '/trabajadorControllerFiltros/edit/([\p{L}0-9_]{4,50})',
         function () {
-            $controlador = new \Com\Daw2\Controllers\edicionTrabajadorController();
-            $controlador->edicionTrabajador();
+            $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+            $controlador->edicionTrabajadorDO();
         },
         'post'
+
 
 
 
