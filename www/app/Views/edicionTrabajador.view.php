@@ -43,7 +43,7 @@ declare(strict_types=1);
 
                             <!-- Switch sin clases de colores (vuelve al estándar azul/gris) -->
                             <div class="custom-control custom-switch pt-4" style="transform: scale(1.3); transform-origin: left center;">
-                                <input type="checkbox" class="custom-control-input" name="activo" id="activo" value="1" <?php echo (!empty($input["activo"]) && $input["activo"] == 1) ? 'checked' : ''; ?>>
+                                <input type="checkbox" class="custom-control-input" name="activo" id="activo" value="<?php echo $input["activo"]?>" <?php echo (!empty($input["activo"]) && $input["activo"] == 1) ? 'checked' : ''; ?>>
                                 <label class="custom-control-label" for="activo" style="cursor: pointer;"></label>
                                 <p class="text-danger small"><?php echo $errores['activo'] ?? ''; ?></p>
                             </div>

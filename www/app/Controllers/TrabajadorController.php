@@ -212,7 +212,7 @@ class TrabajadorController extends BaseController
                 if ((int)$campos['retencionIRPF'] > 100) {
                     $badFields['retencionIRPF'] = 'Tiene que ser un valor menor a 100';
                 }
-                if ((int)$campos['retencionIRPF'] < 0) {
+                if ((int)$campos['retencionIRPF'] <= 0) {
                     $badFields['retencionIRPF'] = 'Tiene que ser un valor mayor que 0';
                 }
             }
@@ -224,7 +224,7 @@ class TrabajadorController extends BaseController
     private function checkerEmpty($valor):array{
         $emptyFields = [];
         foreach ($valor as $key => $value) {
-            if (empty($value)) {
+            if (empty($value)&& $value !== 0) {
                 $emptyFields[$key] = 'campo vacio' ;
             }
         }
@@ -247,6 +247,10 @@ class TrabajadorController extends BaseController
         $data['countrys'] =  $countries;
         $modelTrabajador = new TrabajadorModel();
         $input = $modelTrabajador->whereName($username);
+        if($input === false){
+           header('Location: /trabajadorControllerFiltros');
+           exit;
+        }
         if($errores !== []){
             $input=$inputError;
         }

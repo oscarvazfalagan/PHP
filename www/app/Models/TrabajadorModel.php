@@ -118,10 +118,10 @@ class TrabajadorModel extends BaseDbModel
    }
 
 
-    public function whereName($username):array{
-        $sql = self::SELECT_FROM . " WHERE username LIKE :username";
+    public function whereName($username):array|false{
+        $sql = self::SELECT_FROM . " WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['username' => "%{$username}%"]);
+        $stmt->execute(['username' => $username]);
         return $stmt->fetch();
     }
 
