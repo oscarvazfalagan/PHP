@@ -173,7 +173,7 @@ class TrabajadorController extends BaseController
     }
 
 
-    private function checkTrabajadorFields($campos):array{
+    private function checkTrabajadorFields(array $campos):array{
         $badFields = $this->checkerEmpty($campos);
 
         if(empty($badFields['username']) && strlen($campos['username'])<4){
@@ -191,28 +191,30 @@ class TrabajadorController extends BaseController
 
         if(empty($badFields['id_country'])){
             $modelCountries = New AuxCountries();
-            if(!$modelCountries->checkWhereID($campos['idCountry'])){
+            if(!$modelCountries->checkWhereID($campos['id_country'])){
                 $badFields['id_country'] = 'El country no existe';
             }
         }
 
-
-        if(filter_var($campos['salarioBruto'], FILTER_VALIDATE_INT) === false ){
-            $badFields['salarioBruto'] = 'Tienes que introducir un valor numerico';
-        }else{
-            if((int)$campos['salarioBruto']>500){
-                $badFields['salarioBruto']= 'El valor del salario tiene que ser mayo a 500 ';
+        if(empty($badFields['salarioBruto'])) {
+            if (filter_var((int)$campos['salarioBruto'], FILTER_VALIDATE_INT) === false) {
+                $badFields['salarioBruto'] = 'Tienes que introducir un valor numerico';
+            } else {
+                if ((int)$campos['salarioBruto'] < 500) {
+                    $badFields['salarioBruto'] = 'El valor del salario tiene que ser mayo a 500 ';
+                }
             }
         }
-
-        if(filter_var($campos['retencionIRPF'], FILTER_VALIDATE_INT) === false ){
-            $badFields['retencionIRPF'] = 'Tienes que introducir un valor numerico';
-        }else{
-            if((int)$campos['retencionIRPF']>100){
-                $badFields['retencionIRPF'] = 'Tiene que ser un valor menor a 100';
-            }
-            if((int)$campos['retencionIRPF']<0){
-                $badFields['retencionIRPF'] = 'Tiene que ser un valor mayor que 0';
+        if(empty($badFields['salarioBruto'])) {
+            if (filter_var((int)$campos['retencionIRPF'], FILTER_VALIDATE_INT) === false) {
+                $badFields['retencionIRPF'] = 'Tienes que introducir un valor numerico';
+            } else {
+                if ((int)$campos['retencionIRPF'] > 100) {
+                    $badFields['retencionIRPF'] = 'Tiene que ser un valor menor a 100';
+                }
+                if ((int)$campos['retencionIRPF'] < 0) {
+                    $badFields['retencionIRPF'] = 'Tiene que ser un valor mayor que 0';
+                }
             }
         }
 
@@ -223,18 +225,20 @@ class TrabajadorController extends BaseController
         $emptyFields = [];
         foreach ($valor as $key => $value) {
             if (empty($value)) {
-                $emptyFields[] = [$key => 'campo vacio']; ;
+                $emptyFields[$key] = 'campo vacio' ;
             }
         }
         return $emptyFields;
     }
 
 
-    public function edicionTrabajador(String $username){
+    public function edicionTrabajador(String $username , array $errores = [],array $inputError=[]){
         $data = array(
             'titulo' => 'Edicion de Trabajadores',
             'breadcrumb' => ['Inicio', 'edicionTrabajadores'],
+            'errores' => $errores
         );
+
         $modelRoles = new AuxRolTrabajadores();
         $roles = $modelRoles->getRoles();
         $data['roles'] = $roles;
@@ -243,18 +247,18 @@ class TrabajadorController extends BaseController
         $data['countrys'] =  $countries;
         $modelTrabajador = new TrabajadorModel();
         $input = $modelTrabajador->whereName($username);
+        if($errores !== []){
+            $input=$inputError;
+        }
         $data['input'] = $input;
 
         $this->view->showViews(array('templates/header.view.php', 'edicionTrabajador.view.php', 'templates/footer.view.php'), $data);
     }
 
-    public function edicionTrabajadorDO(){
-        $errores = $this->checkTrabajadorForm($_POST);
+    public function edicionTrabajadorDO(String $username){
+        $errores = $this->checkTrabajadorFields($_POST);
         if ($errores !== []) {
-            $this->new(
-                filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                $errores
-            );
+            $this->edicionTrabajador($username,$errores,$_POST);
         } else {
             $trabajadoresModel = new TrabajadorModel();
             $res = $trabajadoresModel->updateTrabajador($_POST);

@@ -146,7 +146,24 @@ class TrabajadorModel extends BaseDbModel
 
 
     public function updateTrabajador(array $datos){
-        $sql = "UPDATE TRABAJADORES SET username = :username,,salarioBruto = :salarioBruto,retencionIRPF = :retencionIRPF,activo = :activo,id_rol = :id_rol,id_country = :id_country "
+        $sql = "UPDATE trabajadores SET 
+                        salarioBruto = :salarioBruto,
+                        retencionIRPF = :retencionIRPF,
+                        activo = :activo,
+                        id_rol = :id_rol,
+                        id_country = :id_country 
+                    WHERE username LIKE :username";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+
+            'salarioBruto'  => $datos['salarioBruto'],
+            'retencionIRPF' => $datos['retencionIRPF'],
+            'activo'        => $datos['activo'],
+            'id_rol'        => $datos['id_rol'],
+            'id_country'    => $datos['id_country'],
+            'username'      => $datos['username'],
+        ]);
+
     }
 
 

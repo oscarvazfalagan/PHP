@@ -309,9 +309,9 @@ class FrontController
 
     ); Route::add(
         '/trabajadorControllerFiltros/edit/([\p{L}0-9_]{4,50})',
-        function () {
+        function ($username) {
             $controlador = new \Com\Daw2\Controllers\TrabajadorController();
-            $controlador->edicionTrabajadorDO();
+            $controlador->edicionTrabajadorDO($username);
         },
         'post'
 

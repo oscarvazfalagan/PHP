@@ -14,7 +14,7 @@ class AuxCountries extends BaseDbModel
         return $roles;
     }
     public function checkWhereID($idCountry):array{
-        $sql = ("SELECT  id FROM aux_countries WHERE id == :idCountry ");
+        $sql = ("SELECT  id FROM aux_countries WHERE id = :idCountry ");
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idCountry' => $idCountry]);
         return $stmt->fetchAll();

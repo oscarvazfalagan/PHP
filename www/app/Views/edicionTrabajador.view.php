@@ -15,7 +15,6 @@ declare(strict_types=1);
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Datos del trabajador</h6>
                     </div>
-                </form>
                 <div class="card-body">
                     <div class="row col-12 col-lg-12 ">
                         <div class="col-4 mb-3">
@@ -31,8 +30,8 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="alias">Retencion:</label>
-                                <input type="text" class="form-control" name="retencion" id="retencion" min="0" max="100" value="<?php echo $input["retencionIRPF"] ?? ''; ?>"/>
-                                <p class="text-danger small"><?php echo $errores[''] ?? ''; ?></p>
+                                <input type="text" class="form-control" name="retencionIRPF" id="retencionIRPF" min="0" max="100" value="<?php echo $input["retencionIRPF"] ?? ''; ?>"/>
+                                <p class="text-danger small"><?php echo $errores['retencionIRPF'] ?? ''; ?></p>
                             </div>
                         </div>
                     </div>
@@ -44,9 +43,9 @@ declare(strict_types=1);
 
                             <!-- Switch sin clases de colores (vuelve al estándar azul/gris) -->
                             <div class="custom-control custom-switch pt-4" style="transform: scale(1.3); transform-origin: left center;">
-                                <input type="checkbox" class="custom-control-input" name="activo" id="activo" value="" <?php echo ($input["activo"]==1) ? 'checked':'' ; ?>>
+                                <input type="checkbox" class="custom-control-input" name="activo" id="activo" value="1" <?php echo (!empty($input["activo"]) && $input["activo"] == 1) ? 'checked' : ''; ?>>
                                 <label class="custom-control-label" for="activo" style="cursor: pointer;"></label>
-                                <p class="text-danger small"><?php echo $errores[''] ?? ''; ?></p>
+                                <p class="text-danger small"><?php echo $errores['activo'] ?? ''; ?></p>
                             </div>
                         </div>
 
@@ -54,7 +53,7 @@ declare(strict_types=1);
                         <?php if(!empty($roles)): ?>
                             <div class="col-4 mb-3">
                                 <label for="rol" class="mb-1">Rol:</label>
-                                <select name="rol" id="rol" class="form-control" data-placeholder="Rol">
+                                <select name="id_rol" id="id_rol" class="form-control" data-placeholder="Rol">
                                     <option value="<?php echo $input['id_rol']; ?>">-</option>
                                     <?php foreach ($roles as $rol => $dataRol): ?>
                                         <option value="<?php echo $dataRol['id_rol']; ?>"
@@ -67,7 +66,7 @@ declare(strict_types=1);
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <p class="text-danger small"><?php echo $errores[''] ?? ''; ?></p>
+
                             </div>
                             <p class="text-danger small"><?php echo $errores['id_rol'] ?? ''; ?></p>
                         <?php endif; ?>
@@ -78,9 +77,10 @@ declare(strict_types=1);
                                  ?>
                              <div class="col-4 mb-3">
                                  <label for="id_rol">Pais :</label>
-                                 <select name="Pais " id="Pais " class="form-control" data-placeholder="Rol">
+                                 <select name="id_country" id="id_country" class="form-control" data-placeholder="Rol">
+                                     <option value="<?php echo $input['id_country']; ?>">-</option>
                                      <?php foreach ($countrys as $country => $dataCountry): ?>
-                                     <option value="<?php echo $input['id_country'];?>"
+                                     <option value="<?php echo $dataCountry['id'];?>"
                                              <?php if((int)$dataCountry['id']==$input['id_country']):
                                              echo 'selected'  ;
                                             else:
@@ -88,7 +88,7 @@ declare(strict_types=1);
                                          endif;?>> <?php echo $dataCountry['country_name']?></option>
                                      <?php endforeach; ?>
                                  </select>
-                                 <p class="text-danger small"><?php echo $errores[''] ?? ''; ?></p>
+                                 <p class="text-danger small"><?php echo $errores['id_country'] ?? ''; ?></p>
                              </div>
                          <?php
                          endif;
@@ -98,9 +98,11 @@ declare(strict_types=1);
                         <div class="col-12 text-right">
                             <a href="/trabajadorControllerFiltros/" value="" name="reiniciar" class="btn btn-danger">Atras</a>
                             <input type="submit" value="Editar" name="enviar" class="btn btn-primary ml-2"/>
+
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
