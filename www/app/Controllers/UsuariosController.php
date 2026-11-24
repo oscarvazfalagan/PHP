@@ -41,4 +41,42 @@ class UsuariosController extends BaseController
     }
 
 
+    public function showLogin(string $error = ''): void
+    {
+        $data = array(
+            'titulo' => '',
+            'breadcrumb' => ['Inicio', 'login'],
+            'error' => $error,
+        );
+
+        $this->view->showViews(array('templates/header.view.php', 'login.view.php', 'templates/footer.view.php'), $data);
+    }
+
+    public function doLogin():void
+    {
+        $UsuariosModel = new UsuariosModel();
+        $user = $UsuariosModel ->getUsuarioByEmail($_POST["email"]);
+        if($user && password_verify($_POST["pass"], $user["pass"])){
+            session_regenerate_id();
+            $_SESSION['usuario'] = $user;
+            header("Location: /");
+        }else{
+            $error = 'Email o Contraseña Incorrecta';
+            $this->showLogin($error);
+        }
+    }
+
+
+    public function doLogout():void{
+        session_destroy();
+        header("Location: /");
+    }
+
+
+
+
+
+
+
+
 }

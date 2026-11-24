@@ -12,6 +12,7 @@ class FrontController
 {
     public static function main()
     {
+        session_start();
         Route::add(
             '/',
             function () {
@@ -314,6 +315,42 @@ class FrontController
             $controlador->edicionTrabajadorDO($username);
         },
         'post'
+
+    ); Route::add(
+        '/preferencias',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\preferenciasController();
+            $controlador->showPrefrencias();
+        },'get'
+
+    ); Route::add(
+        '/preferencias',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\preferenciasController();
+            $controlador->savePrefrencias();
+        },'post'
+
+
+    ); Route::add(
+        '/login',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\UsuariosController();
+            $controlador->showLogin();
+        },'get'
+
+    ); Route::add(
+        '/login',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\UsuariosController();
+            $controlador->doLogin();
+        },'post'
+    ); Route::add(
+        '/logout',
+        function () {
+            $controlador = new \Com\Daw2\Controllers\UsuariosController();
+            $controlador->doLogout();
+        },'get'
+
 
 
 

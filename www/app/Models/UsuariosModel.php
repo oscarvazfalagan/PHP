@@ -111,6 +111,12 @@ class UsuariosModel extends BaseDbModel
             return(int)$filtros['page'];
         }
     }
-
+    public function getUsuarioByEmail(string $email) :array|bool
+    {
+        $sql = ("SELECT  * FROM usuario_sistema WHERE email = :email ");
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch();
+    }
 
 }
