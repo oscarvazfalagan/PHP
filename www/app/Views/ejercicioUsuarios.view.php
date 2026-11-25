@@ -128,7 +128,7 @@ declare(strict_types=1);
                         <td><?php echo $dataUsuario['last_date'] ?></td>
                         <td>
                             <a href="mailto:<?php echo $dataUsuario['email'] ?>" class="btn btn-sm btn-primary" title="email"><i class="fa-solid fa-envelope"></i></a>
-                            <a class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="/usuarios-sistema/edit/<?php echo $dataUsuario['id_usuario']?>" class="btn btn-sm btn-info" title="editar" ><i class="fa-solid fa-pen-to-square"></i></a>
                             <a class="btn btn-sm btn-danger" title="delete"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>

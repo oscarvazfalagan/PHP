@@ -119,4 +119,34 @@ class UsuariosModel extends BaseDbModel
         return $stmt->fetch();
     }
 
+    public function getUsuarioByName(string $username) :array|bool
+    {
+        $sql = ("SELECT  * FROM usuario_sistema WHERE nombre = :username ");
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' =>$username]);
+        return $stmt->fetch();
+    }
+
+
+
+    public function checkByEmail(string $email,string $id_usuario) :array|bool
+    {
+        $sql = ("SELECT  * FROM usuario_sistema WHERE email = :$email and id_usuario != :id_usuario ");
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' =>$email,'id_usuario' =>$id_usuario]);
+        return $stmt->fetch();
+    }
+
+
+    public function getUsuarioById(string $id_usuario) :array|bool
+    {
+        $sql = ("SELECT  * FROM usuario_sistema WHERE id_usuario = :id_usuario ");
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_usuario' =>$id_usuario]);
+        return $stmt->fetch();
+    }
+
+
+
+
 }

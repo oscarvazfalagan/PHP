@@ -350,7 +350,21 @@ class FrontController
             $controlador = new \Com\Daw2\Controllers\UsuariosController();
             $controlador->doLogout();
         },'get'
+    ); Route::add(
+        '/usuarios-sistema/edit/(\d+)',
+        function ($id) {
+            $controlador = new \Com\Daw2\Controllers\UsuariosController();
+            $controlador->edicionUsuario($id);
+        },
+        'get'
 
+    ); Route::add(
+        '/usuarios-sistema/edit/(\d+)',
+        function ($id) {
+            $controlador = new \Com\Daw2\Controllers\UsuariosController();
+            $controlador->edicionUsuarioDO($id);
+        },
+        'post'
 
 
 

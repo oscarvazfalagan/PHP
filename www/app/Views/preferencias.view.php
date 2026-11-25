@@ -5,9 +5,9 @@ declare(strict_types=1);
 ?>
 
 <!--Inicio HTML -->
-<div class="card-body">id
+<div class="card-body">
     <div class="row">
-        <div class="col-12">country_code
+        <div class="col-12">
             <div class="card shadow mb-4">
                 <form method="post" >
                     <input type="hidden" name="order" value="1"/>
